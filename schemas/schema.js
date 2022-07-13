@@ -22,6 +22,15 @@ export default createSchema({
           name: "title",
           type: "string",
           description: "Блогын үндсэн гарчиг 50 тэмдэгтээс бүү хэтрүүлээрэй",
+
+          validation: (Rule) => [
+            Rule.required()
+              .min(10)
+              .error("Гарчиг хамгийн багадаа 10н тэмдэгтээс бүрдэнэ"),
+            Rule.max(50).warning(
+              "Гарчиг богинохон байх хэрэгтэй (80 тэмдэгтээс хэтрэхгүй)"
+            ),
+          ],
         },
         {
           title: "Дэд гарчиг",
@@ -39,6 +48,75 @@ export default createSchema({
           title: "Постын зураг",
           name: "cover_image",
           type: "image",
+          fields: [
+            {
+              title: "Зургын тайлбар",
+              name: "alt",
+              type: "text",
+              options: {
+                isHighlighted: true,
+              },
+            },
+          ],
+          options: {
+            hotspot: true,
+          },
+        },
+        {
+          name: "content",
+          type: "array",
+          title: "Постын агуулга",
+          of: [
+            {
+              type: "block",
+            },
+            {
+              type: "image",
+              fields: [
+                {
+                  title: "Зургын тайлбар",
+                  name: "alt",
+                  type: "text",
+                  options: {
+                    isHighlighted: true,
+                  },
+                },
+                {
+                  title: "Зургын байрлал",
+                  name: "position",
+                  type: "string",
+                  options: {
+                    isHighlighted: true,
+                    list: [
+                      {
+                        title: "Голлулж",
+                        value: "center",
+                      },
+                      {
+                        title: "Баруун талд",
+                        value: "right",
+                      },
+                      {
+                        title: "Зүүн талд",
+                        value: "left",
+                      },
+                    ],
+                    layout: "radio",
+                  },
+                },
+              ],
+              options: {
+                hotspot: true,
+              },
+            },
+            {
+              type: "code",
+              options: {
+                title: "Файлын нэр",
+                withFilename: true,
+              },
+            },
+          ],
         },
         {
           title: "Огноо",
